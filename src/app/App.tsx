@@ -21,7 +21,6 @@ export function App() {
         return null;
     }
   }, [activeTab]);
-
   return (
       <div className="min-h-screen bg-zinc-950 text-zinc-100">
         <div className="flex">

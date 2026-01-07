@@ -120,7 +120,6 @@ function NavItem({
       <span className="h-9 w-9 inline-flex items-center justify-center rounded-lg bg-zinc-900/70 border border-zinc-800">
         {icon}
       </span>
-
             {/* Label im collapsed Modus wirklich „wegnehmen“ (kein Click-/Hover-Glitch) */}
             <span
                 className={[
