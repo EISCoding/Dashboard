@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from "react";
+import { Sidebar, TabKey } from "../components/layout/Sidebar";
 import { Header } from "../components/layout/Header";
-import { TabNav, TabKey } from "../components/layout/TabNav";
 import { UtilizationTab } from "../components/tabs/UtilizationTab";
 import { PasswordGeneratorTab } from "../components/tabs/PasswordGeneratorTab";
 import { WeatherTab } from "../components/tabs/WeatherTab";
 
 export function App() {
+  const [collapsed, setCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("utilization");
 
   const content = useMemo(() => {
@@ -22,19 +23,24 @@ export function App() {
   }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <Header
-        title="Homelab Dashboard"
-        subtitle="Monitoring • Tools • Widgets"
-      />
+      <div className="min-h-screen bg-zinc-950 text-zinc-100">
+        <div className="flex">
+          <Sidebar
+              collapsed={collapsed}
+              onToggle={() => setCollapsed((v) => !v)}
+              activeTab={activeTab}
+              onSelectTab={setActiveTab}
+          />
 
-      <main className="mx-auto w-full max-w-6xl px-4 pb-12">
-        <div className="sticky top-0 z-20 -mx-4 mb-6 border-b border-zinc-800 bg-zinc-950/85 px-4 backdrop-blur">
-          <TabNav active={activeTab} onChange={setActiveTab} />
+          {/* Wichtig: main als flex-1, ohne harte margins → verhindert „buggy“ Layout beim Collapse */}
+          <div className="flex min-w-0 flex-1 flex-col">
+            <Header title="Homelab Dashboard" subtitle="Monitoring • Tools • Widgets" />
+
+            <main className="mx-auto w-full max-w-6xl px-4 pb-12 pt-6">
+              {content}
+            </main>
+          </div>
         </div>
-
-        {content}
-      </main>
-    </div>
+      </div>
   );
 }
