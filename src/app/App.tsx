@@ -1,12 +1,14 @@
 import React, { useMemo, useState } from "react";
 import { Header } from "../components/layout/Header";
-import { TabNav, TabKey } from "../components/layout/TabNav";
+import { Sidebar } from "../components/layout/Sidebar";
+import { TabKey } from "../components/layout/TabNav";
 import { UtilizationTab } from "../components/tabs/UtilizationTab";
 import { PasswordGeneratorTab } from "../components/tabs/PasswordGeneratorTab";
 import { WeatherTab } from "../components/tabs/WeatherTab";
 
 export function App() {
   const [activeTab, setActiveTab] = useState<TabKey>("utilization");
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const content = useMemo(() => {
     switch (activeTab) {
@@ -23,18 +25,23 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <Header
-        title="Homelab Dashboard"
-        subtitle="Monitoring • Tools • Widgets"
-      />
-
-      <main className="mx-auto w-full max-w-6xl px-4 pb-12">
-        <div className="sticky top-0 z-20 -mx-4 mb-6 border-b border-zinc-800 bg-zinc-950/85 px-4 backdrop-blur">
-          <TabNav active={activeTab} onChange={setActiveTab} />
+      <div className="flex min-h-screen">
+        <Sidebar
+          active={activeTab}
+          collapsed={isCollapsed}
+          onChange={setActiveTab}
+          onToggle={() => setIsCollapsed((prev) => !prev)}
+        />
+        <div className="flex-1">
+          <Header
+            title="Homelab Dashboard"
+            subtitle="Monitoring • Tools • Widgets"
+          />
+          <main className="mx-auto w-full max-w-6xl px-6 pb-12 pt-8">
+            {content}
+          </main>
         </div>
-
-        {content}
-      </main>
+      </div>
     </div>
   );
 }
